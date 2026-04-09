@@ -1,0 +1,39 @@
+{
+  "name": "nestjs-gpt4-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NestJS service for GPT chat completions, streaming, system prompts, history management, and token counting.",
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "lint": "eslint \"src/**/*.ts\" --fix"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.4.12",
+    "@nestjs/config": "^3.2.3",
+    "@nestjs/core": "^10.4.12",
+    "@nestjs/platform-express": "^10.4.12",
+    "@nestjs/swagger": "^8.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "js-tiktoken": "^1.0.21",
+    "openai": "^4.104.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.4.8",
+    "@nestjs/schematics": "^10.1.4",
+    "@nestjs/testing": "^10.4.12",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.10",
+    "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
