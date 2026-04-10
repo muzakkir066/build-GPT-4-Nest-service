@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
+  IsIn,
   IsNumber,
   IsOptional,
   IsString,
@@ -10,6 +11,16 @@ import {
 } from 'class-validator';
 
 export class ChatRequestDto {
+  @ApiPropertyOptional({
+    description: 'Which provider should answer this request.',
+    example: 'anthropic',
+    enum: ['openai', 'anthropic', 'compare'],
+    default: 'openai',
+  })
+  @IsOptional()
+  @IsIn(['openai', 'anthropic', 'compare'])
+  provider?: 'openai' | 'anthropic' | 'compare';
+
   @ApiProperty({
     description: 'The user message sent to the model.',
     example: 'Explain NestJS providers in simple terms.',
@@ -34,8 +45,8 @@ export class ChatRequestDto {
   systemPrompt?: string;
 
   @ApiPropertyOptional({
-    description: 'OpenAI model name.',
-    example: 'gpt-4',
+    description: 'OpenAI or Claude model name depending on the provider.',
+    example: 'gpt-4o-mini',
   })
   @IsOptional()
   @IsString()

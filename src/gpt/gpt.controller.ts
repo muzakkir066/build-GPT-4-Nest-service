@@ -10,7 +10,12 @@ import {
 import { Response } from 'express';
 import { ChatRequestDto } from './dto/chat-request.dto';
 import { ResetConversationDto } from './dto/reset-conversation.dto';
-import { ChatCompletionResult, GptService, StreamChunk } from './gpt.service';
+import {
+  ChatCompletionResult,
+  GptService,
+  ProviderComparisonResult,
+  StreamChunk,
+} from './gpt.service';
 import { ChatMessage } from './interfaces/chat-message.interface';
 
 @ApiTags('gpt')
@@ -24,8 +29,20 @@ export class GptController {
     description: 'Returns the assistant reply, token usage, and updated conversation history.',
   })
   @Post('chat')
-  createChatCompletion(@Body() payload: ChatRequestDto): Promise<ChatCompletionResult> {
+  createChatCompletion(
+    @Body() payload: ChatRequestDto,
+  ): Promise<ChatCompletionResult | ProviderComparisonResult> {
     return this.gptService.createChatCompletion(payload);
+  }
+
+  @ApiOperation({ summary: 'Compare OpenAI and Anthropic responses side by side' })
+  @ApiBody({ type: ChatRequestDto })
+  @ApiOkResponse({
+    description: 'Returns both provider responses so you can compare quality manually.',
+  })
+  @Post('chat/compare')
+  compareChat(@Body() payload: ChatRequestDto): Promise<ProviderComparisonResult> {
+    return this.gptService.compareProviders(payload);
   }
 
   @ApiOperation({ summary: 'Stream a chat completion over SSE' })
@@ -57,6 +74,7 @@ export class GptController {
       const fallbackChunk: StreamChunk = {
         type: 'error',
         conversationId: payload.conversationId ?? 'new',
+        provider: payload.provider === 'anthropic' ? 'anthropic' : 'openai',
         model: payload.model ?? 'default',
         error: message,
       };
